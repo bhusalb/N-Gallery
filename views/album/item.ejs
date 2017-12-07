@@ -40,6 +40,11 @@
                  data-original-title="操作"/>
         </div>
     </a>
-    <button type="button" class="img-opr btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span>
-    </button>
+    <% if (item['src'].indexOf('deleted_images') == -1){ %>
+    <button type="button" class="img-opr btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span></button>
+    <% } else { %>
+        <button type="button" class="img-opr btn btn-success btn-lg"><span class="glyphicon glyphicon-check"></span>
+        </button>
+    <% } %>
+
 </div>

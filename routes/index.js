@@ -73,7 +73,7 @@ exports.index = function index(req, res) {
     base_dirs: baseDirs, 
     config: conf, 
     help_doc: helpDoc, 
-    _blank: true
+    _blank: false
   });
 
 };

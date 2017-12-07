@@ -14,42 +14,59 @@ var config = require('./lib/config');
 var log = require('./lib/logger');
 var app = express();
 var conf = config.config;
+var basicAuth = require('express-basic-auth');
 
 i18n.configure({
-  locales:['zh', 'en'],
-  directory: __dirname + '/doc/locales'
+    locales: ['zh', 'en'],
+    directory: __dirname + '/doc/locales'
 });
+
+
 
 // all environments
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.favicon(__dirname + '/public/images/favicon.png'));
 if (conf.env == 'development') {
-  app.use(express.logger('dev'));
+    app.use(express.logger('dev'));
 }
 app.use(i18n.init);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+
+
+var loginUsers = {};
+
+loginUsers[process.env.AUTH_USERNAME]  =  process.env.AUTH_PASSWORD;
+
+app.use(basicAuth({
+    users: loginUsers,
+    challenge: true
+}));
+
 app.use(app.router);
 if (conf.env == 'development') {
-  app.use(stylus.middleware({
-    force: true,
-    src: __dirname + '/views',
-    dest: __dirname + '/public'
-  }));
+    app.use(stylus.middleware({
+        force: true,
+        src: __dirname + '/views',
+        dest: __dirname + '/public'
+    }));
 }
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 404
-app.use(function(req, res, next){
-  res.render('404', {content: '404 Not Found'});
+app.use(function (req, res, next) {
+    res.render('404', {content: '404 Not Found'});
 });
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
+
 
 app.get('/', routes.index);
 app.get(/^\/album\/(.*)/, routes.album);
@@ -60,9 +77,9 @@ app.get('^/operationHandler', routes.operationHandler);
 app.get('^/users', user.list);
 
 exports.run = function (port) {
-  config.validate(null);
-  
-  http.createServer(app).listen(port, function () {
-    console.log('Express server listening on port ' + port);
-  });
+    config.validate(null);
+
+    http.createServer(app).listen(port, function () {
+        console.log('Express server listening on port ' + port);
+    });
 };
