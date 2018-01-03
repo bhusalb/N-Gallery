@@ -28,6 +28,7 @@ var errorMsg = {
     5: 'Configuration Error, check out the config file'
 };
 
+
 exports.operationHandler = function (req, res) {
 
     var ret;

@@ -52,8 +52,10 @@
             select_delete_modal: '#delete-modal',
             select_delete: '#del-selected'
         };
+
         selectItems.bindOperation(operationSelector);
-        selectItems.bindHotKeys();
+        // selectItems.bindHotKeys();
+
         $(document).on('deleteSelectSuccess', function (e) {
             $('#delete-modal').modal('hide');
         }).on('deleteSelectFail', function (e) {
@@ -114,7 +116,7 @@
             })
             event.preventDefault();
         })
-        // add gallery base dir 
+        // add gallery base dir
         $("#chg-album-root #add").click(function(event) {
             var root = $("#chg-album-root input").val();
             $.get('/operationHandler', {album_base_dir: root, mode: 'add-path'}, function(data) {
@@ -140,6 +142,7 @@
         var hotKeys = [
             'ctrl+shift+m'
         ];
+
         $(document).bind('keydown', hotKeys[0], function() {
             $('#multi-select').click();
         });
@@ -163,7 +166,7 @@
             }
         };
         $.Woo(conf);
-        
+
         // transition when deleting items
         $('.woo').css('transition', 'top .3s ease-in-out, left .3s ease-in-out');
     });

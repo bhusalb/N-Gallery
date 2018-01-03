@@ -53,11 +53,11 @@ $(function () {
         <% } %>
     };
     selectItems.bindOperation(operationSelector);
-    selectItems.bindHotKeys();
+    // selectItems.bindHotKeys();
     $(document).on('deleteSelectSuccess',function (e) {
         itemScroll.refresh();
         $('#delete-modal').modal('hide');
-        
+
     }).on('deleteSelectFail', function (e) {
         $('#delete-modal').modal('hide');
     }).on('deleteOneSuccess', function () {
@@ -114,7 +114,7 @@ $(function () {
     var pn = location.search.match(/pn=(\d+)/);
     pn = pn ? pn[1] : 1;
     $('#img-nav-pn').text(pn);
-    
+
     $('#img-nav-pre').click(function (e) {
         itemScroll.scrollN(-1);
         e.preventDefault();
@@ -202,5 +202,17 @@ $(function () {
     });
 
 });
+
+function postImageOnSocialMedia(btn) {
+
+    if(confirm('Do you want to post on social media?'))
+        $.post('/post-on-social-media', {'image_path': $(btn).data('src'), 'type': $(btn).data('type')})
+            .success(function (data) {
+                alert('posted on social media');
+            })
+            .fail(function () {
+                alert('sorry posting fail, try again');
+            })
+}
 </script>
 </html>

@@ -22,7 +22,6 @@ i18n.configure({
 });
 
 
-
 // all environments
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -38,12 +37,18 @@ app.use(express.methodOverride());
 
 var loginUsers = {};
 
-loginUsers[process.env.AUTH_USERNAME]  =  process.env.AUTH_PASSWORD;
+loginUsers[process.env.AUTH_USERNAME] = process.env.AUTH_PASSWORD;
 
 app.use(basicAuth({
     users: loginUsers,
     challenge: true
 }));
+
+
+app.use(function (req, res, next) {
+    res.locals.trash_url = '/folder/' + conf.tmp_dir;
+    next();
+});
 
 app.use(app.router);
 if (conf.env == 'development') {
@@ -74,6 +79,7 @@ app.get(/^\/folder\/(.*)/, routes.folder);
 app.get(/^\/root\/(.*)/, routes.album);
 app.get(/^\/local\/(.*)/, routes.local);
 app.get('^/operationHandler', routes.operationHandler);
+app.post('^/post-on-social-media', routes.postOnSocialMedia);
 app.get('^/users', user.list);
 
 exports.run = function (port) {
