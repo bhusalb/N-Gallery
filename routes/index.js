@@ -80,7 +80,6 @@ exports.index = function index(req, res) {
     });
 
 
-
 };
 
 
@@ -219,11 +218,17 @@ exports.local = function (req, res) {
 
 
 exports.postOnSocialMedia = function (req, res) {
-    log(req.body);
     image_path = '/' + req.body.image_path.split('//')[1];
     post_type = req.body.type;
-    log(image_path, post_type);
-    log(exec(conf.social_media_post_command + ' --image ' + image_path + ' --type ' + post_type));
+    exec(conf.social_media_post_command + ' --image ' + image_path + ' --type ' + post_type, function (err, stdout, stderr) {
+        if (err) {
+            log(err);
+            res.status(500).end();
+            return;
+        }
+
+        res.send({'success': 'true'});
+    });
 };
 
 
