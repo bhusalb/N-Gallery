@@ -43,8 +43,8 @@
 
 
     <% if (item['src'].indexOf('deleted_images') == -1){ %>
-    <button class="btn btn-primary" data-src="<%= item['src'] %>" data-type="loksewa" onclick="postImageOnSocialMedia(this)">Post to FB(Loksewa)</button>
     <button type="button" class="img-opr btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span></button>
+    <button class="btn btn-primary" data-src="<%= item['src'] %>" data-type="loksewa" onclick="postImageOnSocialMedia(this)">Post to FB(Loksewa)</button>
     <% } else { %>
         <button type="button" class="img-opr btn btn-success btn-lg"><span class="glyphicon glyphicon-check"></span>
         </button>
